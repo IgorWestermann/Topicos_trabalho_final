@@ -12,7 +12,7 @@ public class TodoController : ControllerBase
     private int _count = INITIAL_SIZE;
 
     [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(List<Todo>), StatusCodes.Status200OK)]
     public IActionResult Get()
     {
         List<Todo> sortedTodos = _todoList
@@ -24,18 +24,9 @@ public class TodoController : ControllerBase
 
 
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Todo), StatusCodes.Status200OK)]
     public IActionResult Create([FromBody] Todo newItem)
     {
-        _count++; ;
-
-        Todo newTodo = new()
-        {
-            Id = _count,
-            Description = newItem.Description,
-            Title = newItem.Title,
-            DueDateTime = newItem.DueDateTime
-        };
 
         if (string.IsNullOrEmpty(newItem.Title))
         {
@@ -47,17 +38,27 @@ public class TodoController : ControllerBase
             return BadRequest("Title is too long.");
         }
 
-        _todoList.Add(newItem);
+        _count++;
+
+        Todo? newTodo = new()
+        {
+            Id = _count,
+            Description = newItem.Description,
+            Title = newItem.Title,
+            DueDateTime = newItem.DueDateTime
+        };
+
+        _todoList.Add(newTodo);
 
         return Ok(newTodo);
     }
 
 
     [HttpGet("{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Todo), StatusCodes.Status200OK)]
     public IActionResult GetById(int id)
     {
-        Todo item = _todoList.Find(t => t.Id == id);
+        Todo? item = _todoList.Find(t => t.Id == id);
 
         if (item == null)
         {
@@ -69,10 +70,10 @@ public class TodoController : ControllerBase
 
 
     [HttpPut("{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     public IActionResult Update(int id, [FromBody] Todo updatedTodo)
     {
-        Todo item = _todoList.Find(t => t.Id == id);
+        Todo? item = _todoList.Find(t => t.Id == id);
 
         if (item == null)
         {
@@ -92,10 +93,10 @@ public class TodoController : ControllerBase
 
 
     [HttpDelete("{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     public IActionResult Delete(int id)
     {
-        Todo item = _todoList.Find(t => t.Id == id);
+        Todo? item = _todoList.Find(t => t.Id == id);
 
         if (item == null)
         {
