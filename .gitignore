@@ -1,0 +1,76 @@
+# Visual Studio files
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Bb]in/
+[Oo]bj/
+obj/**/Debug/
+obj/**/Release/
+obj/**/net7.0/
+
+# Rider & JetBrains related files
+.idea/
+*.sln.iml
+
+# Auto-generated files
+*.generated.cs
+
+# Mac OS-specific files
+.DS_Store
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Azure Web App publish settings
+*.PublishSettings
+PublishScripts/
+
+# Log files
+*.log
+
+# NuGet packages
+*.nupkg
+# Uncomment if necessary, generally it's better to restore NuGet packages before using them
+# in the solution.
+# *.nupkg
+# *.snupkg
+# packages/
+
+# Entity Framework Migrations
+Migrations/
+
+# Ignore secrets
+secrets.json
+
+# Ignore coverage reports
+coverage/
+
+# Resharper
+_ReSharper*/
+
+# SonarQube files
+.sonarqube/
+
+# Local history for Visual Studio
+.localhistory/
+
+# User secrets (should be stored securely)
+**/secrets.json
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Docker files
+docker-compose.override.yml
+docker-compose.*

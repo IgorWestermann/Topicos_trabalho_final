@@ -19,6 +19,13 @@
             IsCompleted = false;
         }
 
+        public void Update(Todo updatedTodo)
+        {
+            Title = updatedTodo.Title;
+            IsCompleted = updatedTodo.IsCompleted;
+            DueDateTime = updatedTodo.DueDateTime;
+        }
+
         public void CheckTodo()
         {
             IsCompleted = true;

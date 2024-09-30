@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TrabalhoFinal.Domain.Entities;
+using TrabalhoFinal.Infra.Exceptions;
 
 namespace TrabalhoFinal.Controllers;
 
@@ -13,29 +14,29 @@ public class TodoController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(typeof(List<Todo>), StatusCodes.Status200OK)]
-    public IActionResult Get()
+    public List<Todo> Get()
     {
         List<Todo> sortedTodos = _todoList
             .OrderBy(t => t.DueDateTime == null)
             .ToList();
 
-        return Ok(sortedTodos);
+        return sortedTodos;
     }
 
 
     [HttpPost]
     [ProducesResponseType(typeof(Todo), StatusCodes.Status200OK)]
-    public IActionResult Create([FromBody] Todo newItem)
+    public Todo Create([FromBody] Todo newItem)
     {
 
         if (string.IsNullOrEmpty(newItem.Title))
         {
-            return BadRequest("Title is required.");
+            throw new ApiException("BadRequest", 404, "Title is required.");
         }
 
         if (newItem.Title.Length > 100)
         {
-            return BadRequest("Title is too long.");
+            throw new ApiException("BadRequest", 404, "Title is too long.");
         }
 
         _count++;
@@ -50,61 +51,56 @@ public class TodoController : ControllerBase
 
         _todoList.Add(newTodo);
 
-        return Ok(newTodo);
+        return newTodo;
     }
 
 
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(Todo), StatusCodes.Status200OK)]
-    public IActionResult GetById(int id)
+    public Todo GetById(int id)
     {
         Todo? item = _todoList.Find(t => t.Id == id);
 
         if (item == null)
         {
-            NotFound("Todo not found.");
+            throw new ApiException("NotFound", 404, "Todo not found.");
         }
 
-        return Ok(item);
+        return item;
     }
 
 
     [HttpPut("{id}")]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-    public IActionResult Update(int id, [FromBody] Todo updatedTodo)
+    public string Update(int id, [FromBody] Todo updatedTodo)
     {
         Todo? item = _todoList.Find(t => t.Id == id);
 
         if (item == null)
         {
-            NotFound("Todo not found.");
+            throw new ApiException("NotFound", 404, "Todo not found.");
         }
 
-        if (item != null)
-        {
-            item.Title = updatedTodo.Title;
-            item.IsCompleted = updatedTodo.IsCompleted;
-            item.DueDateTime = updatedTodo.DueDateTime;
-        }
+        item.Update(updatedTodo);
 
-        return Ok("Todo updated successfuly.");
+        return "Todo updated successfully.";
     }
 
 
     [HttpDelete("{id}")]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-    public IActionResult Delete(int id)
+    public string Delete(int id)
     {
         Todo? item = _todoList.Find(t => t.Id == id);
 
         if (item == null)
         {
-            return NotFound();
+            throw new ApiException("NotFound", 404, "Todo not found.");
         }
 
         _todoList.Remove(item);
 
-        return Ok("Todo removed successfuly.");
+        return "Todo removed successfuly.";
     }
 
 }
