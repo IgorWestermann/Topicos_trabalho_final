@@ -7,43 +7,40 @@ namespace TrabalhoFinal.Controllers;
 [Route("[controller]")]
 public class TodoController : ControllerBase
 {
-    private static List<Todo> _todoList = new();
-    private static int _count = 0; // Code Smell: Magic numbers
+    private List<Todo> _todoList = new();
+    private const int INITIAL_SIZE = 0;
+    private int _count = INITIAL_SIZE;
 
-    // Code Smell:
-    // - Large method that does too many things (S.O.L.I.D)
-    // - Inefficient use  of LINQ
     [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult Get()
     {
-        var sortedTodos = _todoList
+        List<Todo> sortedTodos = _todoList
             .OrderBy(t => t.DueDateTime == null)
-            .ThenBy(t => t.DueDateTime)
             .ToList();
 
         return Ok(sortedTodos);
     }
 
 
-    // Code Smells:
-    // - Method that has hardcoded responses and no validation
-    // - Global mutable state
-    // - Hardcoded rule for item creation
-    // - Magic number
-    // Potential Bug:
-    // - Inconsistent response
-    // -No validation for Title
     [HttpPost]
-    public IActionResult Create(Todo newItem)
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult Create([FromBody] Todo newItem)
     {
-        _count++;
-        newItem.Id = _count;
+        _count++; ;
+
+        Todo newTodo = new()
+        {
+            Id = _count,
+            Description = newItem.Description,
+            Title = newItem.Title,
+            DueDateTime = newItem.DueDateTime
+        };
 
         if (string.IsNullOrEmpty(newItem.Title))
         {
             return BadRequest("Title is required.");
         }
-
 
         if (newItem.Title.Length > 100)
         {
@@ -52,53 +49,53 @@ public class TodoController : ControllerBase
 
         _todoList.Add(newItem);
 
-
-        return CreatedAtAction(nameof(GetById), new { id = newItem.Id }, newItem);
+        return Ok(newTodo);
     }
 
-    // Code Smells:
-    // - Duplicate code for null check
+
     [HttpGet("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult GetById(int id)
     {
-        var item = _todoList.FirstOrDefault(t => t.Id == id);
+        Todo item = _todoList.Find(t => t.Id == id);
 
         if (item == null)
         {
-            return NotFound();
+            NotFound("Todo not found.");
         }
 
         return Ok(item);
     }
 
-    // Code Smells:
-    // - Duplicate code for null check
-    // - No validation on update
-    // - Inefficient and verbose delete operation
-    [HttpPut("{id}")]
-    public IActionResult Update(int id, Todo updatedTodo)
-    {
-        var item = _todoList.FirstOrDefault(t => t.Id == id);
 
+    [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult Update(int id, [FromBody] Todo updatedTodo)
+    {
+        Todo item = _todoList.Find(t => t.Id == id);
 
         if (item == null)
         {
-            return NotFound();
+            NotFound("Todo not found.");
         }
 
+        if (item != null)
+        {
+            item.Title = updatedTodo.Title;
+            item.IsCompleted = updatedTodo.IsCompleted;
+            item.DueDateTime = updatedTodo.DueDateTime;
+        }
 
-        item.Title = updatedTodo.Title;
-        item.IsCompleted = updatedTodo.IsCompleted;
-        item.DueDateTime = updatedTodo.DueDateTime;
-
-        return NoContent();
+        return Ok("Todo updated successfuly.");
     }
 
 
+
     [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult Delete(int id)
     {
-        var item = _todoList.FirstOrDefault(t => t.Id == id);
+        Todo item = _todoList.Find(t => t.Id == id);
 
         if (item == null)
         {
@@ -106,7 +103,8 @@ public class TodoController : ControllerBase
         }
 
         _todoList.Remove(item);
-        return NoContent();
+
+        return Ok("Todo removed successfuly.");
     }
 
 }
