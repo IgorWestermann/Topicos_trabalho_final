@@ -7,7 +7,7 @@ namespace TrabalhoFinal.Controllers;
 [Route("[controller]")]
 public class TodoController : ControllerBase
 {
-    private List<Todo> _todoList = new();
+    private readonly List<Todo> _todoList = new();
     private const int INITIAL_SIZE = 0;
     private int _count = INITIAL_SIZE;
 
@@ -89,7 +89,6 @@ public class TodoController : ControllerBase
 
         return Ok("Todo updated successfuly.");
     }
-
 
 
     [HttpDelete("{id}")]
