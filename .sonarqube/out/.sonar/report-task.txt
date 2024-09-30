@@ -1,0 +1,6 @@
+projectKey=Topicos_trabalho_final
+serverUrl=http://localhost:9000
+serverVersion=10.6.0.92116
+dashboardUrl=http://localhost:9000/dashboard?id=Topicos_trabalho_final
+ceTaskId=e4272cbe-fa9e-4c5f-a0c6-2329b777b00b
+ceTaskUrl=http://localhost:9000/api/ce/task?id=e4272cbe-fa9e-4c5f-a0c6-2329b777b00b

@@ -1,0 +1,11 @@
+﻿D:\trabalho_final\Topicos_trabalho_final\Controllers\WeatherForecastController.cs
+D:\trabalho_final\Topicos_trabalho_final\Program.cs
+D:\trabalho_final\Topicos_trabalho_final\WeatherForecast.cs
+D:\trabalho_final\Topicos_trabalho_final\obj\Debug\net7.0\TrabalhoFinal.GlobalUsings.g.cs
+D:\trabalho_final\Topicos_trabalho_final\obj\Debug\net7.0\.NETCoreApp,Version=v7.0.AssemblyAttributes.cs
+D:\trabalho_final\Topicos_trabalho_final\obj\Debug\net7.0\TrabalhoFinal.AssemblyInfo.cs
+D:\trabalho_final\Topicos_trabalho_final\obj\Debug\net7.0\TrabalhoFinal.MvcApplicationPartsAssemblyInfo.cs
+D:\trabalho_final\Topicos_trabalho_final\appsettings.Development.json
+D:\trabalho_final\Topicos_trabalho_final\appsettings.json
+D:\trabalho_final\Topicos_trabalho_final\README.md
+D:\trabalho_final\Topicos_trabalho_final\Properties\launchSettings.json
